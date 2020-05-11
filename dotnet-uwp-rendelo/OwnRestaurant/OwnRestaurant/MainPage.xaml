@@ -1,0 +1,157 @@
+﻿<Page
+    x:Class="OwnRestaurant.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OwnRestaurant"
+    xmlns:model="using:OwnRestaurant.Model"
+     xmlns:logic="using:OwnRestaurant.Logic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+
+    <Grid>
+        <NavigationView x:Name="tables"
+                        IsBackEnabled="False"
+                        IsBackButtonVisible="Collapsed"
+                        PaneDisplayMode="Left"
+                        IsSettingsVisible="False"
+                        Loaded="tables_Loaded"
+                        SelectionChanged="tables_SelectionChanged"
+                        IsPaneToggleButtonVisible="False"
+                        PaneTitle="Tables"
+                        >
+
+            <NavigationView.MenuItems>
+                <StackPanel Orientation="Horizontal" Spacing="20" VerticalAlignment="Top">
+                    <TextBlock Text="New table seats:"/>
+                    <TextBox x:Name="newTableSeats"/>
+                    <Button x:Name="btnAddTable" Click="btnAddTable_Click" Width="40" Height="40" Content="+" FontSize="20"/>
+                    <Button x:Name="btnRemoveTable" Click="btnRemoveTable_Click" Width="40" Height="40" Content="-" FontSize="20"/>
+
+                </StackPanel>
+                <NavigationViewItem Tag="newTable" 
+                                    Height="60"
+                                    HorizontalAlignment="Left">
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <NavigationView.Header>
+                <StackPanel Orientation="Horizontal" Spacing="20">
+                    <TextBlock Text="Actual seats:"/>
+                    <TextBlock Text="{x:Bind selectedTable.Seats}"/>
+                    <TextBox x:Name="textSeats" Background="Gray" BorderThickness="2"></TextBox>
+                    <Button x:Name="btnChange" Content="Change seats" Click="btnChange_Click"></Button>
+                </StackPanel>
+            </NavigationView.Header>
+        </NavigationView>
+        <StackPanel Orientation="Horizontal" Spacing="20">
+            <StackPanel  Margin="350,80,0,0" Width="600" Spacing="20" Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel>
+                        <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Hidden">
+                            <ListView x:Name="itemsListView" 
+                          ItemsSource="{x:Bind allItems}" 
+                          HorizontalAlignment="Left" 
+                          Width="240"
+                          SelectionChanged="itemsListView_SelectionChanged">
+                                <ListView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="10" Background="LightGray" Width="492">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Items:" FontSize="20" Foreground="Black"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.HeaderTemplate>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:Name="products" x:DataType="model:Item">
+                                        <Grid Height="48" Tag="{x:Bind Name}" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{x:Bind Name}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ScrollViewer>
+                        <Button x:Name="btnAddOrderToTable" Click="btnAddOrderToTable_Click" Content="Add new order to table" Width="200" Margin="0,20,0,50"/>
+                    </StackPanel>
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="Add new Item" 
+                           FontSize="30"/>
+                        <TextBlock Text="Item name:" />
+                        <TextBox  x:Name="newItemName" 
+                          Width="200"
+                          Background="Gray" 
+                          HorizontalAlignment="Left"/>
+                        <TextBlock Text="Item price:" />
+                        <TextBox  x:Name="newItemPrice" Width="200" Background="Gray" HorizontalAlignment="Left"/>
+                        <Button x:Name="btnAddOrder" Click="btnAddNewItem_Click"  VerticalAlignment="Top"  Content="Add new item" Width="200" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Spacing="20">
+                    <ScrollViewer MaxHeight="600" VerticalScrollBarVisibility="Hidden">
+                    <ItemsControl ItemsSource="{x:Bind selectedTableDisplayedOrders}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="model:Item">
+                                <StackPanel Orientation="Vertical" Width="240" Height="60" HorizontalAlignment="Left">
+                                        <StackPanel >
+                                            <TextBlock Text="{x:Bind Name}" FontSize="20"/>
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Right">
+                                        <TextBlock Text="{x:Bind Price}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    </ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Total:"/>
+                        <TextBlock x:Name="total" Text="{x:Bind selectedTable.Total}"/>
+                    </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Total / seat:"/>
+                            <TextBlock x:Name="totalseat" Text="{x:Bind selectedTable.TotalSeat}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button x:Name="btnFinish" Content="Finish" Click="btnFinish_Click" Width="200"/>
+                </StackPanel>
+
+            </StackPanel>
+            <StackPanel  Width="530" Spacing="20">
+                <StackPanel Orientation="Horizontal" Spacing="25">
+                    <TextBlock Text="Orders:" FontSize="28"/>
+                    <Button x:Name="btnMarkItemAsReady" Click="btnMarkItemAsReady_Click" Width="100" Height="40" Content="Ready" FontSize="20"/>
+                </StackPanel>
+
+                <ScrollViewer Height="710" Width="505" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Background="DimGray">
+                <ListView x:Name="orderListView" 
+                          ItemsSource="{Binding displayedItems, Mode=TwoWay}" 
+                          HorizontalAlignment="Center" 
+                          Width="480"
+                          SelectionChanged="orderListView_SelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Item">
+                            
+                                <StackPanel Orientation="Vertical" Background="DimGray" Width="160" Padding="10" Height="260" Spacing="10">
+                                    <TextBlock FontSize="18" Text="Item: "/>
+                                    <TextBlock FontSize="18" Text="{Binding Name, Mode=TwoWay}"/>
+                                    <TextBlock FontSize="18" Text=", Table: ["/>
+                                    <TextBlock FontSize="18" Text="{Binding TableId , Mode=TwoWay}"/>
+                                    <TextBlock FontSize="18" Text="]"/>
+                                </StackPanel>
+                            
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                </ScrollViewer>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

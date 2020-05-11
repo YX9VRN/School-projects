@@ -1,0 +1,73 @@
+<h2>Case details:</h2>
+<div class="container">
+  <div class="row">
+    <div *ngIf="case" class="col-10">
+      <h3>{{ case.firstName }} {{ case.lastName }}</h3>
+      <h4>{{ case.dateOfBirth }}</h4>
+      <ul>
+        <li>
+          <b>
+            Updated on:
+          </b>
+          {{ case.updated }}
+        </li>
+        <li>
+          <b>
+            Status:
+          </b>
+          {{ case.status }}
+        </li>
+      </ul>
+    </div>
+    <img
+      src="{{ case.imgUrl }}"
+      alt="image"
+      class="rounded float-right col-2"
+    />
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-outline-danger" (click)="open(content)">
+      Delete case
+    </button>
+    <button
+      class="btn btn-outline-success"
+      routerLink="/cases/{{ case.id }}/edit"
+    >
+      Edit case
+    </button>
+    <button class="btn btn-outline-secondary" routerLink="">
+      Back
+    </button>
+  </div>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Delete {{ case.firstName }} ?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-danger"
+        (click)="modal.close('delete'); delete()"
+      >
+        Delete
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.close('cancle')"
+      >
+        Cancle
+      </button>
+    </div>
+  </ng-template>
+</div>

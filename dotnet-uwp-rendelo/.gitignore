@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/OwnRestaurant/.vs/OwnRestaurant/v16
+/.vs
+/OwnRestaurant/OwnRestaurant/bin
+/OwnRestaurant/OwnRestaurant/obj
+/OwnRestaurant/OwnRestaurant/OwnRestaurant.csproj.user

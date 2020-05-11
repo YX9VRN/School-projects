@@ -1,0 +1,67 @@
+<div class="container">
+  <button (click)="changeMode()" class="btn btn-secondary">change mode</button>
+</div>
+<h2>Cases:</h2>
+<ng-container
+  *ngTemplateOutlet="mode === 'card' ? cardItem : listItem"
+></ng-container>
+<!--List view  -->
+<ng-template #listItem>
+  <div *ngIf="cases" class="list">
+    <div>
+      <div *ngFor="let case of cases" class="row">
+        <a [routerLink]="['/cases', case.id]" class="col-12">
+          <div class="list-group-item">
+            <h5>{{ case.firstName }} {{ case.lastName }}</h5>
+            <p class="card-text">({{ case.dateOfBirth }})</p>
+            <p *ngIf="case.status == 'Positive'" class="card-text">
+              <span>
+                <fa-icon [icon]="faVirus"></fa-icon> {{ case.status }}</span
+              >
+            </p>
+            <p *ngIf="case.status == 'Dead'" class="card-text">
+              <span>
+                <fa-icon [icon]="faCross"></fa-icon> {{ case.status }}
+              </span>
+            </p>
+            <p *ngIf="case.status == 'Recovered'" class="card-text">
+              <span>
+                <fa-icon [icon]="faHeart"></fa-icon> {{ case.status }}
+              </span>
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #cardItem>
+  <div *ngIf="cases" class="cards">
+    <div *ngFor="let case of cases" class="cards-item">
+      <a [routerLink]="['/cases', case.id]">
+        <div class="card">
+          <!-- <img class="card-image" src="{{ case.imgUrl }}" alt="" /> -->
+          <div class="card-content">
+            <h5 class="card-title">{{ case.firstName }} {{ case.lastName }}</h5>
+            <p *ngIf="case.status == 'Positive'" class="card-text">
+              <span>
+                <fa-icon [icon]="faVirus"></fa-icon> {{ case.status }}
+              </span>
+            </p>
+            <p *ngIf="case.status == 'Dead'" class="card-text">
+              <span>
+                <fa-icon [icon]="faCross"></fa-icon> {{ case.status }}
+              </span>
+            </p>
+            <p *ngIf="case.status == 'Recovered'" class="card-text">
+              <span>
+                <fa-icon [icon]="faHeart"></fa-icon> {{ case.status }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</ng-template>

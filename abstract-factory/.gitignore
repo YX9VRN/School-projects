@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/TeslaFactory/.vs/TeslaFactory/v16
+/TeslaFactory/ConsoleApp1/obj
+/TeslaFactory/ConsoleApp1/bin/Debug/netcoreapp3.0
